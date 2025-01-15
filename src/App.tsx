@@ -5,6 +5,8 @@ import Terminal from './components/Terminal';
 import SocialLinks from './components/SocialLinks';
 import ProjectShowcase from './components/ProjectShowcase';
 import AIAgent from './components/AIAgent';
+import HelloSection from './components/HelloSection';
+import InteractiveHelloSection from './components/HelloSection';
 
 function App() {
   const typingRef = useRef<HTMLSpanElement>(null);
@@ -32,7 +34,7 @@ function App() {
       <AIAgent />
 
       {/* Hello Section */}
-      <section id="hello" className="min-h-screen flex items-center justify-center pt-16">
+      {/* <section id="hello" className="min-h-screen flex items-center justify-center pt-16">
         <div className="text-center">
           <p className="text-gray-300 mb-4 font-mono">Hi all. I am</p>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">Aditya Kumar</h1>
@@ -42,7 +44,12 @@ function App() {
             <span className="animate-blink">|</span>
           </div>
         </div>
+      </section> */}
+
+     <section id="hello " className="min-h-screen items-center justify-center pt-16 mt-16">
+      <InteractiveHelloSection/>
       </section>
+
 
       {/* About Section */}
       <section id="about-me" className="py-20">

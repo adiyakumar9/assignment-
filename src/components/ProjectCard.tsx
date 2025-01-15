@@ -9,6 +9,7 @@ interface ProjectCardProps {
   dates: string;
   liveUrl?: string;
   previewImage?: string;
+  codeSnippet?: string;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -19,6 +20,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   liveUrl,
   previewImage,
 }) => {
+
   const [isDemoActive, setIsDemoActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -60,7 +62,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <div className="relative bg-[#1E1E1E] rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.03]">
+    <div  className="relative bg-[#1E1E1E] rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.03]">
       {/* Project Header */}
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">

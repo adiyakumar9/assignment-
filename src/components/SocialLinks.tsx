@@ -5,7 +5,7 @@ const SocialLinks = () => {
   return (
     <div className="fixed bottom-8 left-8 flex flex-col space-y-4">
       <a
-        href="https://github.com/yourusername"
+        href="https://github.com/adiyakumar9"
         target="_blank"
         rel="noopener noreferrer"
         className="text-gray-300 hover:text-[#00ff9f] transition-colors duration-200"
