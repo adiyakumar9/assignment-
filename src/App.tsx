@@ -1,16 +1,39 @@
-import React, { useEffect, useRef } from 'react';
-import { Terminal as TerminalIcon, MapPin, Mail, Phone } from 'lucide-react';
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
+import { useScroll, motion } from 'framer-motion';
 import Navigation from './components/Navigation';
-import Terminal from './components/Terminal';
 import SocialLinks from './components/SocialLinks';
-import ProjectShowcase from './components/ProjectShowcase';
-import AIAgent from './components/AIAgent';
-import HelloSection from './components/HelloSection';
-import InteractiveHelloSection from './components/HelloSection';
 
-function App() {
+// Lazy load components
+const HelloSection = lazy(() => import('./components/HelloSection'));
+const AboutMe = lazy(() => import('./components/About'));
+const ProjectsSection = lazy(() => import('./components/ProjectSection'));
+const SkillsSection = lazy(() => import('./components/SkillSection'));
+const ExperienceSection = lazy(() => import('./components/ExperienceSection'));
+const EducationSection = lazy(() => import('./components/EducationSection'));
+const ContactSection = lazy(() => import('./components/ContactSection'));
+
+// Loading component
+const LoadingSpinner: React.FC = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-12 h-12 border-4 border-emerald-400/20 border-t-emerald-400 rounded-full animate-spin" />
+      <p className="text-emerald-400 text-sm">Loading...</p>
+    </div>
+  </div>
+);
+
+// Section interface
+interface Section {
+  id: string;
+  Component: React.ComponentType;
+  className?: string;
+}
+
+const App: React.FC = () => {
   const typingRef = useRef<HTMLSpanElement>(null);
+  const { scrollYProgress } = useScroll();
 
+  // Typing animation effect
   useEffect(() => {
     const text = "Front-end developer";
     let index = 0;
@@ -25,195 +48,73 @@ function App() {
     };
 
     typeText();
+
+    return () => {
+      if (element) {
+        element.textContent = '';
+      }
+    };
   }, []);
 
+  // Sections configuration
+  const sections: Section[] = [
+    { id: 'hello', Component: HelloSection },
+    { 
+      id: 'about-me', 
+      Component: AboutMe,
+      className: "py-24 min-h-screen flex items-center bg-gradient-to-b from-gray-900 to-black" 
+    },
+    { id: 'projects', Component: ProjectsSection },
+    { id: 'skills', Component: SkillsSection },
+    { id: 'experience', Component: ExperienceSection },
+    { id: 'education', Component: EducationSection },
+    { id: 'contact-me', Component: ContactSection },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0d253f] to-[#01b074]">
+    <div className="bg-black min-h-screen">
+      {/* Fixed Elements */}
       <Navigation />
       <SocialLinks />
-      <AIAgent />
 
-      {/* Hello Section */}
-      {/* <section id="hello" className="min-h-screen flex items-center justify-center pt-16">
-        <div className="text-center">
-          <p className="text-gray-300 mb-4 font-mono">Hi all. I am</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">Aditya Kumar</h1>
-          <div className="flex items-center justify-center text-[#00ff9f] font-mono">
-            <span className="mr-2">&gt;</span>
-            <span ref={typingRef}></span>
-            <span className="animate-blink">|</span>
-          </div>
-        </div>
-      </section> */}
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-emerald-400/20 z-50"
+        style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
+      />
 
-     <section id="hello " className="min-h-screen items-center justify-center pt-16 mt-16">
-      <InteractiveHelloSection/>
-      </section>
+      {/* Main Content */}
+      <main className="relative z-10">
+        {sections.map(({ id, Component, className }) => (
+          <section
+            key={id}
+            id={id}
+            className={className}
+          >
+            <Suspense fallback={<LoadingSpinner />}>
+              <Component />
+            </Suspense>
+          </section>
+        ))}
+      </main>
 
-
-      {/* About Section */}
-      <section id="about-me" className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; about-me</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-gray-300 mb-4">
-                Passionate front-end developer with expertise in building modern web applications.
-                Focused on creating intuitive user experiences and writing clean, maintainable code.
-              </p>
-              <p className="text-gray-300">
-                Currently working on innovative projects at ITH Technologies, where I contribute to
-                building scalable solutions and implementing best practices in web development.
-              </p>
-            </div>
-            <Terminal />
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-20 bg-black bg-opacity-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; projects</h2>
-          <ProjectShowcase />
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; skills</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div>
-              <h3 className="text-[#00ff9f] mb-4 font-mono">Languages</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>JavaScript</li>
-                <li>TypeScript</li>
-                <li>HTML</li>
-                <li>CSS</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-[#00ff9f] mb-4 font-mono">Frameworks</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Angular</li>
-                <li>React</li>
-                <li>AngularJS</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-[#00ff9f] mb-4 font-mono">Tools</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Git</li>
-                <li>VS Code</li>
-                <li>Webpack</li>
-                <li>RESTful APIs</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="py-20 bg-black bg-opacity-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; experience</h2>
-          <div className="space-y-8">
-            <div className="relative pl-8 border-l-2 border-[#00ff9f]">
-              <div className="absolute w-4 h-4 bg-[#00ff9f] rounded-full -left-[9px] top-0"></div>
-              <h3 className="text-xl font-semibold text-white">Software Development Engineer</h3>
-              <p className="text-[#00ff9f] mb-2">ITH Technologies Pvt. Ltd.</p>
-              <p className="text-gray-400 mb-2">Aug 2022 – Jan 2024</p>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                <li>Led front-end development for multiple client projects</li>
-                <li>Implemented responsive designs and optimized performance</li>
-                <li>Collaborated with cross-functional teams</li>
-              </ul>
-            </div>
-            <div className="relative pl-8 border-l-2 border-[#00ff9f]">
-              <div className="absolute w-4 h-4 bg-[#00ff9f] rounded-full -left-[9px] top-0"></div>
-              <h3 className="text-xl font-semibold text-white">Software Engineer Trainee</h3>
-              <p className="text-[#00ff9f] mb-2">ITH Technologies Pvt. Ltd.</p>
-              <p className="text-gray-400 mb-2">Feb 2022 – Aug 2022</p>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                <li>Assisted in developing web applications</li>
-                <li>Learned and implemented best practices</li>
-                <li>Participated in code reviews and team meetings</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Education Section */}
-      <section id="education" className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; education</h2>
-          <div className="relative pl-8 border-l-2 border-[#00ff9f]">
-            <div className="absolute w-4 h-4 bg-[#00ff9f] rounded-full -left-[9px] top-0"></div>
-            <h3 className="text-xl font-semibold text-white">Bachelor of Technology</h3>
-            <p className="text-[#00ff9f] mb-2">Computer Science and Engineering</p>
-            <p className="text-gray-300">Amity University Lucknow</p>
-            <p className="text-gray-400">2018 – 2022</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact-me" className="py-20 bg-black bg-opacity-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 font-mono">&gt; contact-me</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold text-white mb-6">Get in Touch</h3>
-              <div className="space-y-4">
-                <div className="flex items-center text-gray-300">
-                  <Mail className="mr-4" size={20} />
-                  <a href="mailto:adityakumar950489@gmail.com" className="hover:text-[#00ff9f]">
-                    adityakumar950489@gmail.com
-                  </a>
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <Phone className="mr-4" size={20} />
-                  <span>+91 9113400868</span>
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <MapPin className="mr-4" size={20} />
-                  <span>Hyderabad, Telangana, India</span>
-                </div>
-              </div>
-            </div>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full px-4 py-2 bg-[#1E1E1E] text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00ff9f]"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-4 py-2 bg-[#1E1E1E] text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00ff9f]"
-              />
-              <textarea
-                placeholder="Message"
-                rows={4}
-                className="w-full px-4 py-2 bg-[#1E1E1E] text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00ff9f]"
-              ></textarea>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-[#00ff9f] text-[#0d253f] rounded font-semibold hover:bg-opacity-90 transition-colors"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
+      {/* Background Pattern */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)] opacity-20" />
+      </div>
 
       {/* Signature */}
-      <div className="fixed bottom-8 right-8 text-gray-300 font-mono">@aditya-kumar</div>
+      <motion.div 
+        className="fixed bottom-8 right-8 text-gray-300 font-mono"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        @aditya-kumar
+      </motion.div>
     </div>
   );
-}
+};
 
 export default App;
