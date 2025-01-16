@@ -72,9 +72,9 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="bg-black min-h-screen">
-      {/* Fixed Elements */}
-      <Navigation />
+<div className="bg-black min-h-screen relative"> {/* Added relative */}
+  <Navigation />
+  <main className="relative z-10">
       <SocialLinks />
 
       {/* Scroll Progress Indicator */}
@@ -113,6 +113,7 @@ const App: React.FC = () => {
       >
         @aditya-kumar
       </motion.div>
+      </main>
     </div>
   );
 };
