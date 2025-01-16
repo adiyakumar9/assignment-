@@ -12,7 +12,7 @@ interface Message {
 
 interface ChatProps {
   onClose: () => void;
-  initialMessage: string; // Initial message from the user
+  initialMessage: string;
 }
 
 const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
@@ -27,47 +27,45 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
       sender: 'user',
       id: Date.now(),
     };
-
-    // Simulate Aditya's initial response
-    const adityaResponse: Message = {
-      text: `Thanks for reaching out! I'd love to chat about ${initialMessage}`,
-      sender: 'aditya',
-      id: Date.now(),
-    };
-    
     setMessages([userMessage]);
-
+    
     // Simulate typing indicator
     setTimeout(() => {
-      setMessages(prev => [...prev, {
-        id: Date.now(),
-        sender: 'aditya',
-        text: 'typing...',
-        isTyping: true
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          sender: 'aditya',
+          text: 'typing...',
+          isTyping: true,
+        },
+      ]);
+
+      // Simulate response after typing
+      setTimeout(() => {
+        setMessages((prev) =>
+          prev.filter((msg) => !msg.isTyping).concat({
+            text: `Thanks for reaching out! I'd love to chat about ${initialMessage}`,
+            sender: 'aditya',
+            id: Date.now(),
+          })
+        );
+      }, 2000);
     }, 500);
-
-    // Simulate response after typing
-    setTimeout(() => {
-      setMessages(prev => prev.filter(msg => !msg.isTyping).concat(adityaResponse));
-    }, 2000);
-
   }, [initialMessage]);
 
   const handleClose = () => {
     setIsClosing(true);
-    
-    // Animate messages away first
+
     const messagesTimeout = setTimeout(() => {
-      setMessages(prevMessages => 
-        prevMessages.map(msg => ({
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) => ({
           ...msg,
-          isClosing: true
+          isClosing: true,
         }))
       );
     }, 100);
-    
-    // Then trigger the parent's onClose
+
     const containerTimeout = setTimeout(() => {
       onClose();
       setIsClosing(false);
@@ -87,8 +85,7 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
     setMessages((prev) => [...prev, newMessage]);
     setInputValue('');
 
-    // Here's where you'll eventually integrate with Botpress
-    // For now, let's simulate a response
+    // Simulate a response
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -99,17 +96,17 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
           isTyping: true,
         },
       ]);
-    }, 500);
 
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.filter((msg) => !msg.isTyping).concat({
-          text: 'This is a placeholder response.',
-          sender: 'aditya',
-          id: Date.now(),
-        })
-      );
-    }, 2000);
+      setTimeout(() => {
+        setMessages((prev) =>
+          prev.filter((msg) => !msg.isTyping).concat({
+            text: 'This is a placeholder response.',
+            sender: 'aditya',
+            id: Date.now(),
+          })
+        );
+      }, 2000);
+    }, 500);
   };
 
   const chatContainerVariants = {
@@ -134,8 +131,8 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
       opacity: 0,
       y: isClosing ? -10 : 20,
       transition: {
-        duration: isClosing ? 0.2 : 0.3
-      }
+        duration: isClosing ? 0.2 : 0.3,
+      },
     },
   };
 
@@ -147,7 +144,6 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
       exit="exit"
       className="w-1/2 h-full flex flex-col justify-end p-8 border-l border-emerald-500/20 relative"
     >
-      {/* Close Button */}
       <div className="absolute top-4 right-4 z-50">
         <motion.button
           onClick={handleClose}
@@ -161,12 +157,11 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
         </motion.button>
       </div>
 
-      {/* Messages Container */}
       <div className="flex-1 overflow-y-auto mb-4 space-y-4 z-10">
         <AnimatePresence mode="sync">
-          {messages.map((message) => (
+          {messages.map((message, index) => (
             <motion.div
-              key={message.id}
+              key={`${message.id}-${index}`}
               variants={messageVariants}
               initial="hidden"
               animate="visible"
@@ -198,7 +193,6 @@ const Chat: React.FC<ChatProps> = ({ onClose, initialMessage }) => {
         </AnimatePresence>
       </div>
 
-      {/* Chat Input Form */}
       <form onSubmit={handleSubmit} className="relative">
         <input
           type="text"
