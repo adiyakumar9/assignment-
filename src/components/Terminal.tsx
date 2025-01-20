@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from 'react';
 
-// Define types for our commands and their return values
 type CommandFunction = (...args: string[]) => string | Promise<string>;
 
 interface Commands {
@@ -12,7 +11,11 @@ interface TerminalProps {
 }
 
 const Terminal: React.FC<TerminalProps> = ({ 
-  initialMessage = ['Welcome to Aditya\'s Interactive Terminal!', 'Type "help" for a list of commands.']
+  initialMessage = [
+    'Welcome to Aditya Kumar\'s Interactive Terminal!', 
+    'Type "help" for a list of commands.',
+    'Software Development Engineer with expertise in Angular and React.'
+  ]
 }) => {
   const [command, setCommand] = useState<string>('');
   const [output, setOutput] = useState<string[]>(initialMessage);
@@ -23,7 +26,6 @@ const Terminal: React.FC<TerminalProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
-  // Simulate fetching data from an external source
   const fetchProjects = async (): Promise<string> => {
     setIsLoading(true);
     try {
@@ -31,9 +33,41 @@ const Terminal: React.FC<TerminalProps> = ({
         setTimeout(() => {
           resolve(`
             Projects:
-            1. Project Chimera (React, Node.js, GraphQL, PostgreSQL): A cutting-edge web application revolutionizing... (more details soon!)
-            2. Project Phoenix (Next.js, Tailwind CSS, Firebase): A blazing fast e-commerce platform with a focus on... (more details soon!)
-            3. Quantum Leap (Angular, Spring Boot, MongoDB): A robust enterprise solution designed to... (more details soon!)
+            
+            1. T-Pro Project (Lead Frontend Developer)
+               • Led frontend development of comprehensive team/project management system
+               • Implemented secure routing authentication for admin panel
+               • Integrated React Query and Formik with Yup validation
+               • Built real-time analytics visualization
+               • Tech Stack: React, React Query, Formik
+            
+            2. Social Collider (Frontend Developer)
+               • Developed task-based social media platform for cross-platform engagement
+               • Created wireframes and mockups for platform UI
+               • Integrated APIs for Twitter, Telegram, and YouTube
+               • Implemented reward system increasing retention by 25%
+               • Tech Stack: HTML, CSS, JavaScript, Angular, APIs
+
+            3. TDX Launchpad (Frontend Developer)
+               • Built cross-chain superdApp for blockchain ecosystems
+               • Developed user interface components using Angular
+               • Integrated complex blockchain APIs for seamless transactions
+               • Optimized frontend achieving 50% load time reduction
+               • Tech Stack: Angular, RESTful APIs, Blockchain Integration
+
+            4. Event Management System (Frontend Developer)
+               • Created event management platform with multiple user roles
+               • Built modular AngularJS components for different user types
+               • Integrated RESTful APIs for data flow
+               • Improved mobile UX by 60%
+               • Tech Stack: HTML, CSS, JavaScript, AngularJS, RESTful APIs
+
+            5. Oshodhara (Frontend Developer)
+               • Developed admin panel for event booking platform
+               • Implemented complex booking systems for various programs
+               • Created dynamic forms for event management
+               • Increased admin efficiency by 35%
+               • Tech Stack: HTML, CSS, JavaScript, AngularJS, RESTful APIs
           `);
         }, 1500);
       });
@@ -46,55 +80,78 @@ const Terminal: React.FC<TerminalProps> = ({
     help: () => `
       Available commands:
 
-      - about:       Learn more about Aditya.
-      - skills:      List Aditya's technical skills.
-      - projects:    View a list of notable projects.
-      - contact:     Get Aditya's contact information.
-      - clear:       Clear the terminal output.
-      - echo [text]: Repeat the given text.
-      - history:     Show command history.
-      - theme [dark/light]: Change the terminal's theme.
-      - date:        Display the current date and time.
-      - loading-test: Test the loading animation.
-      - secret-agent: Enter the secret agent mode... 🤫
+      - about:       Learn about my professional background
+      - experience:  View my work experience
+      - skills:      List my technical skills
+      - projects:    View my notable projects
+      - education:   See my educational background
+      - contact:     Get my contact information
+      - clear:       Clear the terminal output
+      - certifications: View my technical certifications
     `,
-    about: () => 'Aditya is a passionate and driven front-end developer with a knack for building user-friendly and performant web applications. He is always eager to learn new technologies and tackle challenging problems.',
-    skills: () => 'JavaScript, TypeScript, React, Next.js, Angular, Redux, Vue, HTML, CSS, SCSS, Tailwind CSS, Git, Jest, Cypress, Webpack, Node.js, GraphQL',
+    about: () => `
+      Detail-oriented and organized Software Development Engineer with expertise in:
+      • Frontend development using Angular and React
+      • Building responsive and user-friendly web applications
+      • API integration and performance optimization
+      • Leading technical implementations and team collaborations
+    `,
+    experience: () => `
+      Work Experience:
+
+      Software Developer | ITH Technologies Pvt Ltd
+      Feb 2022 - Present | Kanpur
+      • Worked on T-Pro Project - Task Management System
+      • Led integration in Angular for Refer and Earn module and Purchase Token module of TDX launchpad
+      • Integration in Bizthon for Authorization and Judge/Admin Module
+      • Integration in Osodhara to Complete Admin module and Booking desk
+      • Worked on two crypto projects using Node.js, MongoDB, Redis, Angular, Python
+      • Written REST APIs using Node.js, MongoDB for the complete Refer and earn module
+      • Integration in Social-Collider for Project/Campaign Module and Authorization
+      • Technologies: HTML, CSS, JavaScript, Angular, React, Node.js APIs
+    `,
+    skills: () => `
+      Technical Skills:
+
+      Languages: JavaScript, Python, TypeScript, HTML, CSS
+      Frameworks & Libraries: Angular, React.js, Node.js, Express.js
+      Databases: MongoDB, Redis
+      Developer Tools: Git, VS Code, RESTful APIs, Webpack
+      Backend: Node.js, Express.js, MongoDB, Mongoose
+      Other: Web Scraping, Data Structures, Problem Solving, OOP
+      Additional: Responsive Design, UI/UX Design, API Integration, Cross-browser Compatibility
+    `,
     projects: async () => {
       return await fetchProjects();
     },
+    education: () => `
+      Education:
+
+      B.Tech in Computer Science
+      Amity University, Lucknow, Uttar Pradesh
+      2018 - 2022
+
+      Science Stream
+      Rajkeswar Singh High School, Rohtash, Bihar
+      2016 - 2017
+    `,
+    certifications: () => `
+      Technical Certifications:
+
+      • Python (Basic) - HackerRank
+      • SQL (Basic) - HackerRank
+      • Java (Basic) - HackerRank
+      • Using Python to Access Web Data - University of Michigan (Coursera)
+      • Angular - HackerRank (Valid from Nov '22)
+    `,
     contact: () => `
+      Contact Information:
+
+      Phone: +91 9113400868
       Email: adityakumar950489@gmail.com
-      LinkedIn: linkedin.com/in/aditya-kumar-singh-6b544418b/
-      GitHub: github.com/adityakumar950489
+      LinkedIn: linkedin.com/in/aditya-kumar-singh-6b544418b
     `,
-    clear: () => 'CLEAR',
-    echo: (...args: string[]) => args.join(' '),
-    history: () => {
-      return history.length > 0 
-        ? history.map((cmd, i) => `${i + 1}. ${cmd}`).join('\n') 
-        : 'No commands in history yet.';
-    },
-    theme: (mode: string) => {
-      return `Theme switching is a work in progress. Currently, only 'dark' mode is available.`;
-    },
-    date: () => new Date().toLocaleString(),
-    'loading-test': async () => {
-      setIsLoading(true);
-      try {
-        return await new Promise((resolve) => {
-          setTimeout(() => {
-            resolve('Loading test complete!');
-          }, 2000);
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    'secret-agent': () => `
-      You have activated secret agent mode... but nothing seems to have changed. 
-      Perhaps the changes are too subtle to detect. Keep exploring! 🕵️‍♂️
-    `,
+    clear: () => 'CLEAR'
   };
 
   const handleCommand = async (e: KeyboardEvent<HTMLInputElement>) => {
