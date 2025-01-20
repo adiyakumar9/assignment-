@@ -34,7 +34,7 @@ const ContactSection: React.FC = () => {
     {
       name: 'GitHub',
       icon: <Github className="w-5 h-5" />,
-      url: 'https://github.com/adityakumar950489',
+      url: 'https://github.com/adiyakumar9',
     },
     {
       name: 'LinkedIn',
@@ -121,7 +121,7 @@ const ContactSection: React.FC = () => {
                   <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mr-4">
                     <MapPin className="w-5 h-5" />
                   </div>
-                  <span>Hyderabad, Telangana, India</span>
+                  <span>New Delhi, India</span>
                 </motion.div>
               </div>
             </div>

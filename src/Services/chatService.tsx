@@ -28,7 +28,7 @@ interface ChatResponse {
 
 class ChatService {
   private static instance: ChatService;
-  private readonly API_BASE_URL: string = 'http://localhost:5001/api/chat';
+  private readonly API_BASE_URL: string = 'https://portfolio-chatbot-backend-rwxc.onrender.com/api/chat';
   private userKey: string | null = null;
   private conversationId: string | null = null;
 

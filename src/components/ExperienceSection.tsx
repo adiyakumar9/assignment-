@@ -212,6 +212,8 @@ const ExperienceSection: React.FC = () => {
     springConfig
   );
 
+  
+
   return (
     <section 
       ref={containerRef}
