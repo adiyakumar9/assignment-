@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { motion, usePresence, useReducedMotion } from 'framer-motion';
+// import { motion, usePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaReact, FaAngular, FaJs, FaHtml5, FaCss3, FaGit } from 'react-icons/fa';
 import { SiTypescript, SiNextdotjs, SiRedux, SiWebpack, SiFigma, SiPostman, SiMongodb, SiFirebase, SiMysql } from 'react-icons/si';
