@@ -18,18 +18,18 @@ interface Experience {
 const experiences: Experience[] = [
   {
     id: 'sde',
-    title: "Software Development Engineer",
+    title: "Software Developer",
     company: "ITH Technologies Pvt. Ltd.",
-    period: "Aug 2022 – Jan 2024",
+    period: "Feb 2022 – Present",
     type: 'full-time',
     icon: <Terminal className="w-6 h-6" />,
     color: "#10B981",
-    description: "Led frontend development for multiple client projects with a focus on performance optimization. Implemented responsive designs and reduced load times by 40% through code splitting and lazy loading.",
-    technologies: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'],
+    description: "Leading development across multiple cutting-edge projects including T-Pro, a comprehensive project management system where I implemented secure routing authentication and real-time analytics dashboards. Architected Social Collider, a task-based social media platform integrating multiple APIs (Twitter, Telegram, YouTube) with a reward system for user engagement. Spearheaded the development of TDX Launchpad, a pioneering cross-chain superdApp that enables seamless transactions between blockchain ecosystems. Also developed the Event Management System (EMS) with multiple user roles and comprehensive features for sponsors, exhibitors, speakers, and attendees. Consistently focused on performance optimization and user experience, implementing responsive designs and reducing load times through efficient code architecture.",
+    technologies: ['Angular', 'React', 'Node.js', 'MongoDB', 'Redis', 'TypeScript'],
     highlights: [
-      "Led front-end development for multiple client projects",
-      "Implemented responsive designs and optimized performance",
-      "Collaborated with cross-functional teams"
+      "Architected T-Pro's frontend with React Query and Formik, implementing secure routing and real-time analytics visualization",
+      "Developed TDX Launchpad's cross-chain protocol (CCP) enabling seamless multi-chain transactions and token management",
+      "Built Social Collider platform integrating Twitter, Telegram, and YouTube APIs with reward system implementation"
     ]
   },
   {
@@ -40,12 +40,12 @@ const experiences: Experience[] = [
     type: 'internship',
     icon: <Code className="w-6 h-6" />,
     color: "#3B82F6",
-    description: "Assisted in developing web applications using modern JavaScript frameworks. Learned and implemented industry best practices for code quality and performance.",
-    technologies: ['JavaScript', 'React', 'CSS', 'Git'],
+    description: "Took ownership of the Oshodhara project, an event booking platform focused on Osho teachings, where I led the development of the admin panel and booking system from scratch. Implemented comprehensive event management features including complex booking systems for various program types, room reservations, and sadhak modules. Designed and developed the user interface using HTML, CSS, and JavaScript, while creating reusable components with AngularJS. Integrated secure authentication and role-based access control, along with RESTful APIs for seamless data flow. Also contributed to BizThon 2.0, implementing routing authentication and role-based functionality for admin, user, and judge panels, showcasing ability to handle multiple user interfaces and complex system interactions.",
+    technologies: ['AngularJS', 'JavaScript', 'RESTful APIs', 'HTML/CSS'],
     highlights: [
-      "Assisted in developing web applications",
-      "Learned and implemented best practices",
-      "Participated in code reviews and team meetings"
+      "Developed complete admin panel with booking management system for programs and events",
+      "Implemented complex booking features for programs, sadhak modules, and room reservations",
+      "Created dynamic forms and lists for event management, increasing admin efficiency by 35%"
     ]
   }
 ];
