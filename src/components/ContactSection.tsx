@@ -42,7 +42,7 @@ const ContactSection: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5001/api/contacts/contact', {
+      const response = await fetch('https://portfolio-chatbot-backend-rwxc.onrender.com/api/contacts/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
