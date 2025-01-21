@@ -104,7 +104,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Signature */}
-      <motion.div 
+      {/* <motion.div 
         className="fixed bottom-8 right-8 text-gray-300 font-mono z-50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
@@ -113,7 +113,7 @@ const App: React.FC = () => {
 
       >
         @aditya-kumar
-      </motion.div>
+      </motion.div> */}
       </main>
     </div>
   );

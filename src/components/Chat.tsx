@@ -211,6 +211,8 @@ const Chat = ({ onClose, initialMessage }: ChatProps): JSX.Element => {
                   message.text
                 )}
               </div>
+
+
             </motion.div>
           ))}
         </AnimatePresence>
