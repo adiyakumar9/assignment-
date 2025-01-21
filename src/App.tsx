@@ -105,11 +105,12 @@ const App: React.FC = () => {
 
       {/* Signature */}
       <motion.div 
-        className="fixed bottom-8 right-8 text-gray-300 font-mono"
+        className="fixed bottom-8 right-8 text-gray-300 font-mono z-50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
+
       >
         @aditya-kumar
       </motion.div>

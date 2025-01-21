@@ -97,7 +97,7 @@ const HelloSection: React.FC = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
               >
-                Hi all. I am
+                I am
               </motion.span>
             </p>
           </motion.div>
@@ -135,7 +135,7 @@ const HelloSection: React.FC = () => {
                     type="text"
                     value={initialChatMessage}
                     onChange={(e) => setInitialChatMessage(e.target.value)}
-                    placeholder="What would you like to chat about? I'm all ears!"
+                    placeholder="What would you like to chat about?"
                     className="w-full px-6 py-4 bg-gray-900/50 border border-emerald-500/30 rounded-full text-white 
                              placeholder:text-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 
                              focus:ring-emerald-500/20 transition-all duration-300"

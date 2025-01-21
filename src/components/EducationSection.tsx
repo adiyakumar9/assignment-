@@ -86,47 +86,21 @@ const ParticleEffect: React.FC<{ isActive: boolean }> = ({ isActive }) => {
 // Course card component
 const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useTransform(mouseY, [-100, 100], [10, -10]);
-  const rotateY = useTransform(mouseX, [-100, 100], [-10, 10]);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      mouseX.set(x);
-      mouseY.set(y);
-    },
-    [mouseX, mouseY]
-  );
-
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.2 }}
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{ perspective: 1000 }}
+      className="h-full" // Ensure full height
     >
-      <motion.div
+      <div
         className="relative p-6 rounded-xl bg-gray-800/30 border border-gray-700/50 backdrop-blur-sm
-                   hover:border-emerald-500/30 transition-all duration-300"
-        style={{ rotateX, rotateY }}
+                   hover:border-emerald-500/30 transition-all duration-300 h-full flex flex-col"
       >
-        {/* Glow effect */}
-        <motion.div
-          className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300"
-          animate={{
-            opacity: isHovered ? 0.1 : 0,
-            background: "radial-gradient(circle at center, #10b981 0%, transparent 70%)"
-          }}
-        />
-
-        <div className="relative z-10">
+        <div className="flex-1"> {/* This will make all cards the same height */}
           {/* Course icon and name */}
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
@@ -135,8 +109,8 @@ const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index
             <h4 className="text-lg font-semibold text-white">{course.name}</h4>
           </div>
 
-          {/* Description */}
-          <p className="text-gray-400 mb-4">{course.description}</p>
+          {/* Description with fixed height and ellipsis */}
+          <p className="text-gray-400 mb-4 line-clamp-2 h-12">{course.description}</p>
 
           {/* Technologies */}
           <div className="flex flex-wrap gap-2">
@@ -151,9 +125,7 @@ const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index
             ))}
           </div>
         </div>
-
-        <ParticleEffect isActive={isHovered} />
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
@@ -196,7 +168,7 @@ const EducationSection: React.FC = () => {
             initial={{ width: 0 }}
             animate={inView ? { width: "100%" } : {}}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute -left-4 top-1/2 h-px bg-gradient-to-r from-emerald-500/50 to-transparent"
+            // className="absolute -left-4 top-1/2 h-px bg-gradient-to-r  to-transparent"
           />
           
           <h2 className="text-4xl font-mono font-bold relative inline-flex items-center gap-4">

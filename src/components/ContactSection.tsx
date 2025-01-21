@@ -89,7 +89,7 @@ const ContactSection: React.FC = () => {
     <section 
       ref={ref}
       id="contact" 
-      className="relative min-h-screen py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden"
+      className="relative min-h-screen py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">

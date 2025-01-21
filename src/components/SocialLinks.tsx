@@ -67,23 +67,12 @@ const ParticleEffect: React.FC<{ isActive: boolean; emoji: string }> = ({ isActi
 
 const SocialLinkItem: React.FC<{ link: SocialLink; index: number }> = ({ link, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const mouseY = useMotionValue(0);
-  const rotateX = useTransform(mouseY, [-100, 100], [30, -30]);
-  const springConfig = { stiffness: 300, damping: 30 };
-  const scale = useSpring(1, springConfig);
-  const rotate = useSpring(0, springConfig);
-
-  useEffect(() => {
-    scale.set(isHovered ? 1.2 : 1);
-    rotate.set(isHovered ? 360 : 0);
-  }, [isHovered]);
 
   return (
     <motion.div
       className="relative group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{ perspective: 1000 }}
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -93,24 +82,10 @@ const SocialLinkItem: React.FC<{ link: SocialLink; index: number }> = ({ link, i
         target="_blank"
         rel="noopener noreferrer"
         className="relative flex items-center group"
-        style={{
-          rotateX,
-          scale,
-          rotate,
-        }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ y: -4 }}
+        whileTap={{ scale: 0.95 }}
       >
-        {/* Glow Effect */}
-        <motion.div
-          className="absolute inset-0 rounded-full blur-md"
-          animate={{
-            backgroundColor: isHovered ? link.color : "transparent",
-            opacity: isHovered ? 0.5 : 0,
-          }}
-          transition={{ duration: 0.3 }}
-        />
-
-        {/* Icon Container */}
+        {/* Icon Container - Removed rotation effects */}
         <motion.div
           className="relative p-3 rounded-full backdrop-blur-sm border border-gray-700/50"
           animate={{
@@ -124,9 +99,6 @@ const SocialLinkItem: React.FC<{ link: SocialLink; index: number }> = ({ link, i
           >
             {link.icon}
           </motion.div>
-
-          {/* Particle Effects */}
-          <ParticleEffect isActive={isHovered} emoji={link.particle} />
         </motion.div>
 
         {/* Label */}
@@ -142,7 +114,6 @@ const SocialLinkItem: React.FC<{ link: SocialLink; index: number }> = ({ link, i
     </motion.div>
   );
 };
-
 const SocialLinks: React.FC = () => {
   return (
     <div className="fixed bottom-8 left-8 z-50">

@@ -217,7 +217,7 @@ const ExperienceSection: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="min-h-screen py-24 relative overflow-hidden"
+      className="min-h-screen bg-gradient-to-b from-black to-gray-900 py-24 relative overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -235,7 +235,7 @@ const ExperienceSection: React.FC = () => {
             initial={{ width: 0 }}
             animate={{ width: "100%" }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute -left-4 top-1/2 h-px bg-gradient-to-r from-emerald-500/50 to-transparent"
+            // className="absolute -left-4 top-1/2 h-px bg-gradient-to-r from-emerald-500/50 to-transparent"
           />
           <h2 className="text-4xl font-mono font-bold relative inline-flex items-center">
             <span className="text-emerald-400 mr-2">{">"}</span>
