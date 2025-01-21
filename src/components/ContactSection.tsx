@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Mail, Phone, MapPin, Send, Loader2, ExternalLink, Github, Linkedin } from 'lucide-react';
+import { Toast } from './Toast';
+import confetti from 'canvas-confetti';
 
 interface FormData {
   name: string;
@@ -16,25 +18,65 @@ const ContactSection: React.FC = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
 
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#10B981', '#3B82F6', '#34D399', '#60A5FA']
+    });
+  };
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    setFormData({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch('http://localhost:5001/api/contacts/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setToastMessage("Thanks for reaching out! I'll get back to you soon.");
+        setToastType('success');
+        setFormData({ name: '', email: '', message: '' });
+        triggerConfetti();
+      } else {
+        setToastMessage('Failed to send message. Please try again.');
+        setToastType('error');
+        setFormStatus('error');
+      }
+    } catch (error) {
+      setFormStatus('error');
+      console.error('Error sending message:', error);
+      setToastMessage('Something went wrong. Please try again later.');
+      setToastType('error');
+    } finally {
+      setIsSubmitting(false);
+      setShowToast(true);
+      setTimeout(() => setFormStatus('idle'), 3000);
+    }
   };
 
   const socialLinks = [
     {
       name: 'GitHub',
       icon: <Github className="w-5 h-5" />,
-      url: 'https://github.com/adiyakumar9',
+      url: 'https://github.com/adityakumar9',
     },
     {
       name: 'LinkedIn',
@@ -46,7 +88,7 @@ const ContactSection: React.FC = () => {
   return (
     <section 
       ref={ref}
-      id="contact-me" 
+      id="contact" 
       className="relative min-h-screen py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden"
     >
       {/* Background Elements */}
@@ -54,9 +96,6 @@ const ContactSection: React.FC = () => {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/[0.03] to-transparent" />
       </div>
-
-      {/* Gradient Orb */}
-      <div className="absolute -left-1/4 -bottom-1/4 w-1/2 h-1/2 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-full blur-3xl opacity-20 animate-pulse-slow" />
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         {/* Section Header */}
@@ -71,11 +110,11 @@ const ContactSection: React.FC = () => {
               &gt;
             </span>
             <span className="bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
-              contact-me
+              contact
             </span>
           </h2>
           <p className="text-gray-400 mt-4 max-w-2xl">
-            Let's connect! Whether you have a project in mind or just want to say hello, I'd love to hear from you.
+            Available for freelance projects and full-time opportunities. Let's build something amazing together.
           </p>
         </motion.div>
 
@@ -88,10 +127,9 @@ const ContactSection: React.FC = () => {
             className="space-y-8"
           >
             <div className="bg-gray-800/20 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
-              <h3 className="text-xl font-semibold text-white mb-6">Get in Touch</h3>
+              <h3 className="text-xl font-semibold text-white mb-6">Connect With Me</h3>
               
               <div className="space-y-6">
-                {/* Contact Details */}
                 <motion.a
                   href="mailto:adityakumar950489@gmail.com"
                   className="flex items-center text-gray-300 hover:text-emerald-400 transition-colors group"
@@ -153,20 +191,32 @@ const ContactSection: React.FC = () => {
           >
             <form 
               onSubmit={handleSubmit}
-              className="bg-gray-800/20 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50"
+              className="bg-gray-800/20 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 relative overflow-hidden"
             >
+              {formStatus !== 'idle' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`absolute inset-x-0 top-0 p-4 text-center text-white
+                    ${formStatus === 'success' ? 'bg-emerald-500/20' : 'bg-red-500/20'}`}
+                >
+                  {formStatus === 'success' ? 'Message sent successfully!' : 'Failed to send message. Please try again.'}
+                </motion.div>
+              )}
+
               <div className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm text-gray-400 mb-1">Name</label>
                   <input
                     id="name"
                     type="text"
+                    placeholder='Aditya Kumar'
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-2 bg-gray-900/50 text-gray-300 rounded-lg 
                              border border-gray-700 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 
                              transition-colors duration-300"
-                    placeholder="John Doe"
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
@@ -175,13 +225,14 @@ const ContactSection: React.FC = () => {
                   <label htmlFor="email" className="block text-sm text-gray-400 mb-1">Email</label>
                   <input
                     id="email"
+                    placeholder='adityakumar950489@gmail'
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-2 bg-gray-900/50 text-gray-300 rounded-lg 
                              border border-gray-700 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 
                              transition-colors duration-300"
-                    placeholder="john@example.com"
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
@@ -190,13 +241,14 @@ const ContactSection: React.FC = () => {
                   <label htmlFor="message" className="block text-sm text-gray-400 mb-1">Message</label>
                   <textarea
                     id="message"
+                    placeholder='Hi, I would like to work with you!'
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     rows={4}
                     className="w-full px-4 py-2 bg-gray-900/50 text-gray-300 rounded-lg 
                              border border-gray-700 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 
                              transition-colors duration-300 resize-none"
-                    placeholder="Your message here..."
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
@@ -225,7 +277,18 @@ const ContactSection: React.FC = () => {
               </div>
             </form>
           </motion.div>
+          
         </div>
+
+        <AnimatePresence>
+          {showToast && (
+            <Toast
+              message={toastMessage}
+              type={toastType}
+              onClose={() => setShowToast(false)}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
