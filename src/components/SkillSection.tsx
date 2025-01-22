@@ -24,7 +24,7 @@ const skillsData: SkillsData = {
   frameworks: [
     { name: 'React', icon: <FaReact /> },
     { name: 'Angular', icon: <FaAngular /> },
-    { name: 'Next.js', icon: <SiNextdotjs /> },
+    // { name: 'Next.js', icon: <SiNextdotjs /> },
     { name: 'Redux', icon: <SiRedux /> },
   ],
   tools: [
@@ -35,8 +35,8 @@ const skillsData: SkillsData = {
   ],
   databases: [
     { name: 'MongoDB', icon: <SiMongodb /> },
-    { name: 'Firebase', icon: <SiFirebase /> },
-    { name: 'MySQL', icon: <SiMysql /> },
+    // { name: 'Firebase', icon: <SiFirebase /> },
+    // { name: 'MySQL', icon: <SiMysql /> },
   ],
 };
 

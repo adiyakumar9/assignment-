@@ -20,7 +20,7 @@ const experiences: Experience[] = [
     id: 'sde',
     title: "Software Developer",
     company: "ITH Technologies Pvt. Ltd.",
-    period: "Feb 2022 – Present",
+    period: "Aug 2022 – Jan 2024",
     type: 'full-time',
     icon: <Terminal className="w-6 h-6" />,
     color: "#10B981",
